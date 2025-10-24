@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+#include <climits>
+
+using namespace std;
+
+// Функция для вычисления стоимости маршрута
+int calculateCost(const vector<vector<int>>& dist, const vector<int>& path) {
+    int totalCost = 0;
+    for (size_t i = 0; i < path.size() - 1; ++i) {
+        totalCost += dist[path[i]][path[i + 1]];
+    }
+    // Возвращение в начальный город
+    totalCost += dist[path.back()][path[0]];
+    return totalCost;
+}
+
+int main() {
+    int n; // число городов
+    cout << "Введите число городов: ";
+    cin >> n;
+
+    vector<vector<int>> dist(n, vector<int>(n));
+
+    cout << "Введите матрицу расстояний (по строкам):" << endl;
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            cin >> dist[i][j];
+        }
+    }
+
+    vector<int> cities;
+    for (int i = 0; i < n; ++i) {
+        cities.push_back(i);
+    }
+
+    int minCost = INT_MAX;
+    vector<int> optimalPath;
+
+    do {
+        int currentCost = calculateCost(dist, cities);
+        if (currentCost < minCost) {
+            minCost = currentCost;
+            optimalPath = cities;
+        }
+    } while (next_permutation(cities.begin() + 1, cities.end())); // фиксируем стартовый город как первый и переставляем остальные
+
+    // Вывод результата
+    cout << "Оптимальный путь: 0 ";
+    for (int i = 1; i < n; ++i) {
+        cout << "-> " << optimalPath[i];
+    }
+    cout << " -> 0" << endl;
+    cout << "Минимальная стоимость: " << minCost << endl;
+
+    return 0;
+}
