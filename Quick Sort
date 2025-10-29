@@ -1,0 +1,7 @@
+def quick_sort(list):
+  if len(list)<=1:
+    return list
+  key = list[0]
+  less = [x for x in list[1:] if x <= key]
+  more = [x for x in list[1:] if x > key]
+  return quick_sort(less)+[key]+quick_sort(more)
