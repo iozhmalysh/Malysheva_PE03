@@ -1,0 +1,21 @@
+def quick_sort(list):
+  if len(list)<= 0:
+    return list
+  key = list[0]
+  less = [x for x in list[1:] if x <= key]
+  more = [x for x in list[1:] if x > key]
+  return quick_sort(less)+[key]+quick_sort(more)
+  
+def binary_search(list,x):
+  sort = quick_sort(list)
+  left, right = 0, len(sort) -1
+  while left <= right:
+    middle = (left+right)//2
+    if sort[middle] ==x:
+      return middle
+    elif sort[middle] < x:
+      left =middle + 1
+    else:
+      right = middle -1
+  return -1
+  
