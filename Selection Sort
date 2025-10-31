@@ -1,0 +1,32 @@
+#include <iostream>
+#include <vector>
+
+// Функция сортировки выбором
+void selectionSort(std::vector<int>& arr) {
+    int n = arr.size();
+    for (int i = 0; i < n - 1; ++i) {
+        // Ищем индекс минимального элемента в оставшейся части массива
+        int min_idx = i;
+        for (int j = i + 1; j < n; ++j) {
+            if (arr[j] < arr[min_idx]) {
+                min_idx = j;
+            }
+        }
+        // Обмен элементов
+        std::swap(arr[i], arr[min_idx]);
+    }
+}
+
+int main() {
+    std::vector<int> arr = {64, 25, 12, 22, 11}; // пример массива
+    
+    selectionSort(arr);
+
+    // Вывод отсортированного массива
+    for (int num : arr) {
+        std::cout << num << " ";
+    }
+    std::cout << std::endl;
+
+    return 0;
+}
