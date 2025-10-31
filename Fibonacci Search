@@ -1,0 +1,18 @@
+def Fibonacci_search(list,x):
+  sort = quick_sort(list)
+  fib1, fib2= 0, 1
+  while fib1<=len(sort) :
+    fib2, fib1 = fib1, fib2+fib1
+  offset = -1
+  while fib1 >1:
+    i = min(offset+fib2, len(sort)-1)
+    if sort[i] < x:
+      fib1, fib2 = fib2, fib1 -fib2
+      offset = i
+    elif sort[i]> x:
+      fib1, fib2 = fib2 - fib1,  fib1 - fib2
+    else:
+      return i
+  if fib2 and offset +1 < len(sort) and sort[offset + 1] == x:
+    return offset + 1
+  return -1
