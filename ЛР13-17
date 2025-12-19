@@ -1,0 +1,71 @@
+import os
+import heapq
+
+class ExternalMergeSort:
+    def __init__(self, chunk_size=1000):
+        self.chunk_size = chunk_size
+
+    def sort_file(self, input_file, output_file):
+        # Фаза 1: создание отсортированных чанков
+        temp_files = self.create_sorted_chunks(input_file)
+        # Фаза 2: слияние чанков
+        self.merge_chunks(temp_files, output_file)
+        # Удаление временных файлов
+        for temp_file in temp_files:
+            os.remove(temp_file)
+
+    def create_sorted_chunks(self, input_file):
+        temp_files = []
+        chunk = []
+
+        with open(input_file, 'r', encoding='utf-8') as infile:
+            for line in infile:
+                chunk.append(line.rstrip('\n'))
+                if len(chunk) >= self.chunk_size:
+                    chunk.sort()
+                    temp_filename = f"temp_{len(temp_files)}.txt"
+                    with open(temp_filename, 'w', encoding='utf-8') as temp_file:
+                        for item in chunk:
+                            temp_file.write(item + '\n')
+                    temp_files.append(temp_filename)
+                    chunk.clear()
+
+            # Обработка последнего чанка
+            if chunk:
+                chunk.sort()
+                temp_filename = f"temp_{len(temp_files)}.txt"
+                with open(temp_filename, 'w', encoding='utf-8') as temp_file:
+                    for item in chunk:
+                        temp_file.write(item + '\n')
+                temp_files.append(temp_filename)
+
+        return temp_files
+
+    def merge_chunks(self, temp_files, output_file):
+        # Открываем все временные файлы
+        files = [open(fname, 'r', encoding='utf-8') for fname in temp_files]
+        heap = []
+
+        # Инициализация кучи
+        for i, f in enumerate(files):
+            line = f.readline().rstrip('\n')
+            if line:
+                heapq.heappush(heap, (line, i))
+
+        with open(output_file, 'w', encoding='utf-8') as outfile:
+            while heap:
+                smallest, file_idx = heapq.heappop(heap)
+                outfile.write(smallest + '\n')
+                next_line = files[file_idx].readline().rstrip('\n')
+                if next_line:
+                    heapq.heappush(heap, (next_line, file_idx))
+
+        # Закрываем все файлы
+        for f in files:
+            f.close()
+
+# Использование
+if __name__ == "__main__":
+    sorter = ExternalMergeSort(chunk_size=1000)
+    # sorter.sort_file('large_input.txt', 'sorted_output.txt')
+    print("External merge sort успешно реализован")
