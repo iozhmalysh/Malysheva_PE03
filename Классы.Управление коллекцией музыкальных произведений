@@ -1,0 +1,101 @@
+#include <bits/stdc++.h>
+#include<iostream>
+#include<string>
+using namespace std;
+
+
+class MusicTrak{                      //создание класса и его 4 полей: название трека, исполнитель, длительность в сек, рейтинг
+    private:
+        string NameMusic;
+        string Singer;
+        int TimeofMusic;
+        int MusicRating;
+    public:
+        MusicTrak( string name, string artist, int timemusic, int rating){ //конструктор с параметрами
+            NameMusic = name;
+            Singer = artist;
+            TimeofMusic = timemusic;
+            MusicRating = rating;
+        }
+        
+        MusicTrak(){ //автоматический конструктор
+            NameMusic = "Не указано";
+            Singer ="Не указано";
+            TimeofMusic = 0;
+            MusicRating = 0;
+        }
+        
+        ~MusicTrak(){ //деструктор
+            cout<<"Трек удалён"<<endl;
+        }
+        //возвращаем значения полей
+       string getNameMusic(){
+            return NameMusic;
+        }
+        
+        string getSinger(){
+            return Singer;
+        }
+        
+        int getTimeofMusic(){
+            return TimeofMusic;
+        }
+        
+        int getMusicRating(){
+            return MusicRating;
+        }
+        //проверка валидационных данных длительности
+        void setTimeofMusic(int t){
+            if(t > 0){
+                TimeofMusic = t;
+            }else{
+                cout<<"Время трека должно быть больше 0"<<endl;
+            }
+        }
+         //проверка валидационных данных рейтинга
+        void setMusicRating(int r){
+            if(1<= r && r<=10){
+                MusicRating = r;
+            }else{
+                cout<<"Рейтинг от 1 до 10!"<<endl;
+            }
+                
+        }
+        //метод изменения рейтинга + проверка валидационных данных
+        void changerating(int r_1){
+            if(1<= r_1 && r_1<=10){
+                MusicRating = r_1;
+                cout<<"Изменение!Рейтинг:"<<MusicRating<<endl;
+            }else{
+                cout<<"Рейтинг от 1 до 10!"<<endl;
+            }
+        }
+        //метод вывода длительности в виде мм:сс
+        void outputtime(){
+            cout<< setfill('0')<< setw(2)<< TimeofMusic/60<< ":"<<setfill('0')<< setw(2)<< TimeofMusic%60<< endl;
+        }
+        //метод вывода информации
+        void printInfo(){
+            cout<<"Название трека:"<<NameMusic<<endl;
+            cout<<"Исполнитель:"<<Singer<<endl;
+            cout<<"Длительность в секундах:"<<TimeofMusic<<endl;
+            cout<<"Рейтинг:"<<MusicRating<<endl;
+        }
+        
+};
+        
+    
+    
+
+int main() {
+	MusicTrak trak_1; // создание объекта конструктором по умолчанию
+	trak_1.printInfo();  // вывод информации
+	MusicTrak trak_2("Мама Анархия","Виктор Цой",163,10); // создание объекта с параметрами
+	trak_2.printInfo();  // вывод информации
+	trak_2.changerating(100);//изменение рейтинга больше возможного
+	trak_2.changerating(9);//изменение рейтинга
+	trak_2.printInfo(); // вывод информации
+	trak_2.outputtime();//вывод длительности в виде мм:сс
+	return 0;
+
+}
